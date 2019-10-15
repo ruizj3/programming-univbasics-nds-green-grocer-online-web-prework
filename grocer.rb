@@ -36,7 +36,7 @@ def consolidate_cart(cart)
   result
 end
 
-def mk_coupon_hash(c)
+def coupon_map(c)
   rounded_unit_price = (c[:cost].to_f * 1.0 / c[:num]).round(2)
   {
     :item => "#{c[:item]} W/COUPON",
@@ -47,7 +47,7 @@ end
 
 def apply_coupon_to_cart(matching_item, coupon, cart)
   matching_item[:count] -= coupon[:num]
-  item_with_coupon = mk_coupon_hash(coupon)
+  item_with_coupon = coupon_map(coupon)
   item_with_coupon[:clearance] = matching_item[:clearance]
   cart << item_with_coupon
 end
@@ -61,9 +61,9 @@ def apply_coupons(cart, coupons)
     coupon = coupons[index]
     item_with_coupon = find_item_by_name_in_collection(coupon[:item], cart)
     item_is_in_basket = !!item_with_coupon
-    count_is_big_enough_to_apply = item_is_in_basket && item_with_coupon[:count] >= coupon[:num]
+    bulk_order = item_is_in_basket && item_with_coupon[:count] >= coupon[:num]
 
-    if item_is_in_basket and count_is_big_enough_to_apply
+    if item_is_in_basket and bulk_order
       apply_coupon_to_cart(item_with_coupon, coupon, cart)
     end
     index += 1
