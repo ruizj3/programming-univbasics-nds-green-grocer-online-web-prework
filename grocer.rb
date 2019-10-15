@@ -107,7 +107,7 @@ def checkout(cart, coupons)
   apply_clearance(ccart)
 
   while index < ccart.length do
-    total += items_total_cost(ccart[i])
+    total += items_total_cost(ccart[index])
     index += 1
   end
 
